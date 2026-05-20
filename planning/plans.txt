@@ -1,4 +1,4 @@
-Goal is to have a java plugin that sends data to an applicable
+Goal is to have a java plugin that sends data to a webapp
 
 Pages: 
  - main page: shows a demo leaderboard
@@ -14,3 +14,7 @@ Tables:
     - unique players:
         - kills | deaths | current life count | maybe time played |
     
+Notes: 20/05/26
+ """
+ relearnt about flask, need to learn java, so work on quick frontend display, then move to plugin asap
+ """
