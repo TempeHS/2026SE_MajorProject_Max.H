@@ -1,0 +1,16 @@
+Goal is to have a java plugin that sends data to an applicable
+
+Pages: 
+ - main page: shows a demo leaderboard
+ - navigation bar: has buttons to go to search or main page
+ - search: has a search bar which will take unique codes and then go to leaderboard
+ - leaderboard: takes the data from the sql table and presents it in a table
+
+Tables:
+ - table of servers: has unique key, name of server, and any options checked off
+ - server:
+    - player kills:
+        - player killed | player killer | item killed with | time/date | 
+    - unique players:
+        - kills | deaths | current life count | maybe time played |
+    
