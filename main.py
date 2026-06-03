@@ -3,7 +3,11 @@ from flask import render_template
 from flask import request
 import database_manager as dbhandler
 
-app = Flask(__name__, template_folder="Flaskapp/templates")
+app = Flask(
+    __name__,
+    template_folder="Flaskapp/templates",
+    static_folder="Flaskapp/static",
+)
 
 
 @app.route("/")
@@ -12,12 +16,19 @@ def mainpage():
     return render_template("mainpage.html")
 
 
-@app.route("/search", methods=["GET", "POST"])
-def search(): ...
+@app.route("/search", methods=["GET"])
+def search():
+    return render_template("search.html")
 
 
-@app.route("/leaderboard", methods=["GET", "POST"])
-def leaderboard(): ...
+@app.route("/leaderboard", methods=["GET"])
+def leaderboard():
+    return render_template("leaderboard.html")
+
+
+@app.route("/navbar", methods=["POST"])
+def navbar():
+    return render_template("navbar.html")
 
 
 if __name__ == "__main__":
