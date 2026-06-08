@@ -11,25 +11,19 @@ app = Flask(
 
 
 @app.route("/")
-@app.route("/mainpage")
-def mainpage():
-    return render_template("mainpage.html")
-
-
 @app.route("/search", methods=["GET"])
 def search():
+    search = request.args.get("search", "").strip()
+    results = []
+    leaderboards = dbhandler.get_leaderboards(search)
 
-    return render_template("search.html")
+    if search:
+        results = dbhandler.search_servers(search)
+        leaderboards = dbhandler.get_leaderboards(search)
 
-
-@app.route("/leaderboard", methods=["GET"])
-def leaderboard():
-    return render_template("leaderboard.html")
-
-
-@app.route("/navbar", methods=["POST"])
-def navbar():
-    return render_template("navbar.html")
+    return render_template(
+        "search.html", search=search, results=results, leaderboards=leaderboards
+    )
 
 
 if __name__ == "__main__":

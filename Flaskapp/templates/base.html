@@ -11,9 +11,6 @@
   </head>
   <body>
     {% include "navbar.html" %}
-    <main>
-      <h1>{% block heading %}Page Heading{% endblock %}</h1>
-      {% block content %}{% endblock %}
-    </main>
+    <main>{% block content %}{% endblock %}</main>
   </body>
 </html>
