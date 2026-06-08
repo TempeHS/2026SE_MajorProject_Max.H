@@ -3,7 +3,8 @@ PRAGMA foreign_keys = ON;
 Create Table If not Exists servers(
     serverID INTEGER PRIMARY KEY CHECK (serverID BETWEEN 100000 AND 999999),
     serverName text not null,
-    sessionsActive integer not null DEFAULT 0 CHECK (sessionsActive >= 0)
+    sessionsActive integer not null DEFAULT 0 CHECK (sessionsActive >= 0),
+    isPrivate INTEGER NOT NULL DEFAULT 1 CHECK (isPrivate IN (0, 1))
 );
 
 Create Table if Not Exists players(

@@ -18,3 +18,7 @@ Notes: 20/05/26
  """
  relearnt about flask, need to learn java, so work on quick frontend display, then move to plugin asap
  """
+
+
+ HTML layout
+ 

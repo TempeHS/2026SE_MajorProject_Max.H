@@ -1,0 +1,11 @@
+<h2>Server List</h2>
+
+{% if leaderboards %}
+<ul>
+  {% for lb in leaderboards %}
+  <li>{{ lb.name }} — {{ lb.score }} active sessions</li>
+  {% endfor %}
+</ul>
+{% else %}
+<p>No servers yet.</p>
+{% endif %}

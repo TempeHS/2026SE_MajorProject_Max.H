@@ -3,21 +3,27 @@ from flask import render_template
 from flask import request
 import database_manager as dbhandler
 
-app = Flask(__name__, template_folder="Flaskapp/templates")
+app = Flask(
+    __name__,
+    template_folder="Flaskapp/templates",
+    static_folder="Flaskapp/static",
+)
 
 
 @app.route("/")
-@app.route("/mainpage")
-def mainpage():
-    return render_template("mainpage.html")
+@app.route("/search", methods=["GET"])
+def search():
+    search = request.args.get("search", "").strip()
+    results = []
+    leaderboards = dbhandler.get_leaderboards(search)
 
+    if search:
+        results = dbhandler.search_servers(search)
+        leaderboards = dbhandler.get_leaderboards(search)
 
-@app.route("/search", methods=["GET", "POST"])
-def search(): ...
-
-
-@app.route("/leaderboard", methods=["GET", "POST"])
-def leaderboard(): ...
+    return render_template(
+        "search.html", search=search, results=results, leaderboards=leaderboards
+    )
 
 
 if __name__ == "__main__":
