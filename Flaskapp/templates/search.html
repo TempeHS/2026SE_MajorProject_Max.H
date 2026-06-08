@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Search{% endblock %}
+{% block heading %}Search Servers{% endblock %}
+
+{% block content %}
+<form method="get" action="{{ url_for('search') }}">
+  <input type="text" name="q" value="{{ q }}" placeholder="Search by name, IP" />
+  <button type="submit">Search</button>
+</form>
+
+{% if q and results %}
+  <ul>
+    {% for row in results %}
+      <li>
+        <strong>{{ row['name'] }}</strong>
+        {% if row['ip_address'] %} — {{ row['ip_address'] }}{% endif %}
+        {% if row['location'] %} ({{ row['location'] }}){% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+{% elif q %}
+  <p>No results found for "{{ q }}".</p>
+{% endif %}
+{% endblock %}

@@ -18,6 +18,7 @@ def mainpage():
 
 @app.route("/search", methods=["GET"])
 def search():
+
     return render_template("search.html")
 
 

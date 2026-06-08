@@ -1,2 +1,30 @@
 body {
+  background-color: rgb(39, 201, 201);
+}
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0 1rem;
+  background-color: #c8cbce;
+}
+
+.navbar a {
+  color: rgb(219, 9, 9);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.navlink a:hover {
+  text-decoration: underline;
+}
+
+main {
+  padding-top: 80px;
 }
