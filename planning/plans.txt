@@ -19,6 +19,5 @@ Notes: 20/05/26
  relearnt about flask, need to learn java, so work on quick frontend display, then move to plugin asap
  """
 
-
- HTML layout
+	One-paragraph project description, Status (current sprint · last increment · next planned increment), how to run, links to the two backlog files. Update the Status section at the end of every sprint.
  
