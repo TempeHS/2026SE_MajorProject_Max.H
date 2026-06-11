@@ -2,6 +2,9 @@ from flask import Flask
 from flask import render_template
 from flask import request
 import database_manager as dbhandler
+from flask import session
+from flask import redirect
+from flask import url_for
 
 app = Flask(
     __name__,
@@ -24,6 +27,26 @@ def search():
     return render_template(
         "search.html", search=search, results=results, leaderboards=leaderboards
     )
+
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        email = request.args.get("email", "").strip()
+        password = request.args.get("password", "")
+        action = request.form.get("action", "login")
+
+        if not email or not password:
+            message = "Please input a email and password"
+
+        elif action == "signup":
+            
+
+
+@app.route("/logout.html", methods=["GET"])
+def logout():
+    session.clear()
+    return redirect(url_for("login"))
 
 
 if __name__ == "__main__":
