@@ -32,15 +32,31 @@ def search():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        email = request.args.get("email", "").strip()
-        password = request.args.get("password", "")
+        email = request.form.get("email", "").strip()
+        password = request.form.get("password", "")
+        userID = ""
         action = request.form.get("action", "login")
 
+        # if there is no values in either box
         if not email or not password:
             message = "Please input a email and password"
 
+        # if the user clicks signup
         elif action == "signup":
-            
+            # if the email is in the db then return message
+            if not dbhandler.check_User(email):
+                message = "email already used"
+                return message
+            # if the email is not the db then return message and add email and password
+            elif dbhandler.check_User(email, password, userID):
+                dbhandler.add_User(email, password, userID)
+
+            else:
+                message = "integrity error"
+                return message
+
+        elif action == "login":
+            ...
 
 
 @app.route("/logout.html", methods=["GET"])
