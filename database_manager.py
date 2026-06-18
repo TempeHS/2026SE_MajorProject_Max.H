@@ -69,7 +69,6 @@ def login_user(Email: str, passingWord: str):
             "Select * From Logins Where Email = ? and passingWord = ?",
             (Email, passingWord),
         ).fetchone()
-        conn.close()
         return user is not None
     except sqlite3.IntegrityError as e:
         print(f"login error: {e}")
