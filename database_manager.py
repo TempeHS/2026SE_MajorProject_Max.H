@@ -11,12 +11,17 @@ def dbConnect():
     return conn
 
 
-def add_server(serverName: str, serverID: int, isPrivate: int = 1) -> bool:
+def add_server(
+    serverName: str,
+    userID: int,
+    serverID: int,
+    isPrivate: int = 1,
+) -> bool:
     try:
         conn = dbConnect()
         conn.execute(
-            "INSERT INTO servers (serverID, serverName, isPrivate) VALUES (?, ?, ?)",
-            (serverID, serverName, isPrivate),
+            "INSERT INTO servers (serverID, userID, serverName, isPrivate) VALUES (?, ?, ?, ?)",
+            (serverID, userID, serverName, isPrivate),
         )
         conn.commit()
         return True
@@ -52,6 +57,22 @@ def add_User(Email: str, passingWord: str, userID: int) -> bool:
         return True
     except sqlite3.IntegrityError as e:
         print(f"Integrity error: {e}")
+        return False
+    finally:
+        conn.close()
+
+
+def login_user(Email: str, passingWord: str):
+    try:
+        conn = dbConnect()
+        user = conn.execute(
+            "Select * From Logins Where Email = ? and passingWord = ?",
+            (Email, passingWord),
+        ).fetchone()
+        conn.close()
+        return user is not None
+    except sqlite3.IntegrityError as e:
+        print(f"login error: {e}")
         return False
     finally:
         conn.close()
