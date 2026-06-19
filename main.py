@@ -26,7 +26,6 @@ def search():
 
     if search:
         results = dbhandler.search_servers(search)
-        leaderboards = dbhandler.get_leaderboards(search)
 
     return render_template(
         "search.html", search=search, results=results, leaderboards=leaderboards
@@ -38,7 +37,7 @@ def search():
 def login():
     message = ""
     if request.method == "POST":
-        email = request.form.get("email", "").strip()
+        email = request.form.get("email", "").strip().lower()
         password = request.form.get("password", "")
         action = request.form.get("action", "login")
 
@@ -67,6 +66,7 @@ def login():
             if dbhandler.login_user(email, password):
                 session["email"] = email
                 message = "Login Succesful"
+                redirect(url_for("search"))
             else:
                 message = "Invalid email or password"
 
@@ -75,7 +75,8 @@ def login():
 
 @app.route("/serveradd.html", methods=["POST", "GET"])
 def serveradd():
-    return render_template("/serverdd.html")
+
+    return render_template("serveradd.html")
 
 
 @app.route("/logout.html", methods=["GET"])

@@ -14,14 +14,15 @@ def dbConnect():
 def add_server(
     serverName: str,
     userID: int,
-    serverID: int,
+    serverPort: int,
+    serverHost: str,
     isPrivate: int = 1,
 ) -> bool:
+    conn = dbConnect()
     try:
-        conn = dbConnect()
         conn.execute(
-            "INSERT INTO servers (serverID, userID, serverName, isPrivate) VALUES (?, ?, ?, ?)",
-            (serverID, userID, serverName, isPrivate),
+            "INSERT INTO servers (serverHost, serverPort, userID, serverName, isPrivate) VALUES (?, ?, ?, ?, ?)",
+            (serverHost, serverPort, userID, serverName, isPrivate),
         )
         conn.commit()
         return True
@@ -47,11 +48,14 @@ def get_leaderboards(search: str):
 
 
 def add_User(Email: str, passingWord: str, userID: int) -> bool:
+    conn = dbConnect()
     try:
-        conn = dbConnect()
+        pw_hash = bcrypt.hashpw(passingWord.encode("utf-8"), bcrypt.gensalt()).decode(
+            "utf-8"
+        )
         conn.execute(
             "Insert Into Logins (Email, passingWord, userID) Values(?, ?, ?)",
-            (Email, passingWord, userID),
+            (Email.strip().lower(), pw_hash, userID),
         )
         conn.commit()
         return True
@@ -63,14 +67,20 @@ def add_User(Email: str, passingWord: str, userID: int) -> bool:
 
 
 def login_user(Email: str, passingWord: str):
+    conn = dbConnect()
     try:
-        conn = dbConnect()
-        user = conn.execute(
-            "Select * From Logins Where Email = ? and passingWord = ?",
-            (Email, passingWord),
+        row = conn.execute(
+            "Select passingWord From Logins Where Email = ?",
+            (Email.strip().lower(),),
         ).fetchone()
-        return user is not None
-    except sqlite3.IntegrityError as e:
+        if not row:
+            return False
+
+        return bcrypt.checkpw(
+            passingWord.encode("utf-8"),
+            row["passingWord"].encode("utf-8"),
+        )
+    except Exception as e:
         print(f"login error: {e}")
         return False
     finally:
@@ -79,6 +89,8 @@ def login_user(Email: str, passingWord: str):
 
 def check_User(Email: str) -> bool:
     conn = dbConnect()
-    row = conn.execute("Select * From Logins Where Email = ?", (Email,)).fetchone()
+    row = conn.execute(
+        "Select * From Logins Where Email = ?", (Email.strip().lower(),)
+    ).fetchone()
     conn.close()
     return row is not None
