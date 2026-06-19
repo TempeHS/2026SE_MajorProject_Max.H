@@ -1,5 +1,6 @@
 import sqlite3
 import bcrypt
+import mcwebapi
 
 dbPath = "Flaskapp/databases/servers.db"
 
@@ -31,6 +32,14 @@ def add_server(
         return False
     finally:
         conn.close()
+
+
+# adds palyers to palyers table
+def add_player(): ...
+
+
+# adds players kills in server kills table, need player 1 and 2, weapon used, time/date, serverhost as reference
+def add_player_interaction(): ...
 
 
 def search_servers(search: str):

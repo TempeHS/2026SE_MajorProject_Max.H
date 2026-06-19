@@ -8,6 +8,7 @@ from flask import url_for
 import random
 import flask_wtf as csrfprot
 from functools import wraps
+import mcwebapi
 
 app = Flask(
     __name__,
