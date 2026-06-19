@@ -21,3 +21,7 @@ Notes: 20/05/26
 
 	One-paragraph project description, Status (current sprint · last increment · next planned increment), how to run, links to the two backlog files. Update the Status section at the end of every sprint.
  
+
+flask config operations
+ https://flask.palletsprojects.com/en/stable/config/
+

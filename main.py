@@ -6,6 +6,8 @@ from flask import session
 from flask import redirect
 from flask import url_for
 import random
+import flask_wtf as csrfprot
+from functools import wraps
 
 app = Flask(
     __name__,
@@ -13,8 +15,14 @@ app = Flask(
     static_folder="Flaskapp/static",
 )
 
+# flask config
+app.config["SESSION_COOKIE_HTTPONLY"] = True
+app.config["PERMANENT_SESSION_LIFETIME"] = 10800
 # CHANGE DO NOT USE FOR FINAL THINGY
 app.config["SECRET_KEY"] = "your_temporary_local_dev_key_here"
+
+# add csrf protection
+csrf = csrfprot(app)
 
 
 @app.route("/")
@@ -30,6 +38,16 @@ def search():
     return render_template(
         "search.html", search=search, results=results, leaderboards=leaderboards
     )
+
+
+def login_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        if "email" not in session:
+            return redirect(url_for("login"))
+        return f(*args, **kwargs)
+
+    return decorated
 
 
 # function for both login and signup
@@ -74,12 +92,14 @@ def login():
 
 
 @app.route("/serveradd.html", methods=["POST", "GET"])
+@login_required
 def serveradd():
 
     return render_template("serveradd.html")
 
 
 @app.route("/logout.html", methods=["GET"])
+@login_required
 def logout():
     session.clear()
     return redirect(url_for("login"))
