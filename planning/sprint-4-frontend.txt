@@ -1,0 +1,3 @@
+sprint-4-frontend
+
+sprint goal: fix any errors, fix html pages and make more concise, change css to look nicer, 

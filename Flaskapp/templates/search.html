@@ -2,6 +2,7 @@
 %}
 <div class="page-content">
   <form class="search" method="get" action="{{ url_for('search') }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
     <input
       type="text"
       name="search"

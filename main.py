@@ -6,6 +6,11 @@ from flask import session
 from flask import redirect
 from flask import url_for
 import random
+from flask_wtf.csrf import CSRFProtect
+from functools import wraps
+import mcwebapi
+import os
+from cryptography.fernet import Fernet, InvalidToken
 
 app = Flask(
     __name__,
@@ -13,8 +18,14 @@ app = Flask(
     static_folder="Flaskapp/static",
 )
 
+# flask config
+app.config["SESSION_COOKIE_HTTPONLY"] = True
+app.config["PERMANENT_SESSION_LIFETIME"] = 10800
 # CHANGE DO NOT USE FOR FINAL THINGY
 app.config["SECRET_KEY"] = "your_temporary_local_dev_key_here"
+
+# add csrf protection
+csrf = CSRFProtect(app)
 
 
 @app.route("/")
@@ -26,11 +37,20 @@ def search():
 
     if search:
         results = dbhandler.search_servers(search)
-        leaderboards = dbhandler.get_leaderboards(search)
 
     return render_template(
         "search.html", search=search, results=results, leaderboards=leaderboards
     )
+
+
+def login_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        if "email" not in session:
+            return redirect(url_for("login"))
+        return f(*args, **kwargs)
+
+    return decorated
 
 
 # function for both login and signup
@@ -38,7 +58,7 @@ def search():
 def login():
     message = ""
     if request.method == "POST":
-        email = request.form.get("email", "").strip()
+        email = request.form.get("email", "").strip().lower()
         password = request.form.get("password", "")
         action = request.form.get("action", "login")
 
@@ -66,19 +86,70 @@ def login():
         elif action == "login":
             if dbhandler.login_user(email, password):
                 session["email"] = email
+                session["userID"] = dbhandler.get_userID(email)
                 message = "Login Succesful"
+                redirect(url_for("search"))
             else:
                 message = "Invalid email or password"
 
     return render_template("login.html", message=message)
 
 
-@app.route("/serveradd.html", methods=["POST", "GET"])
+@app.route("/myservers.html", methods=["POST", "GET"])
+@login_required
+def my_servers():
+    return render_template("myservers.html")
+
+
+@app.route("/serveradd.html", methods=["GET", "POST"])
+@login_required
 def serveradd():
-    return render_template("/serverdd.html")
+    message = ""
+
+    if request.method == "POST":
+        serverName = request.form.get("serverName", "").strip()
+        serverHost = request.form.get("serverHost", "").strip()
+        serverPort_raw = request.form.get("serverPort", "").strip()
+        serverKey = request.form.get("masterkey", "").strip()
+        privacy = request.form.get("privacy", "private")
+        isPrivate = 1 if privacy == "private" else 0
+        userID = session["userID"]
+
+        if not serverName or not serverHost or not serverPort_raw or not serverKey:
+            message = "All fields are required."
+            return render_template("serveradd.html", message=message)
+
+        try:
+            serverPort = int(serverPort_raw)
+            if serverPort < 1 or serverPort > 65535:
+                raise ValueError
+        except ValueError:
+            message = "Port must be a number between 1 and 65535."
+            return render_template("serveradd.html", message=message)
+
+        for _ in range(5):
+            serverID = random.randint(100000, 999999)
+            ok, db_message = dbhandler.add_server_details(
+                serverName=serverName,
+                userID=userID,
+                serverID=serverID,
+                serverPort=serverPort,
+                serverHost=serverHost,
+                serverKey=serverKey,
+                isPrivate=isPrivate,
+            )
+            if ok:
+                return render_template("serveradd.html", message=db_message)
+            message = db_message
+
+        if not message:
+            message = "Could not add server. Try again."
+
+    return render_template("serveradd.html", message=message)
 
 
 @app.route("/logout.html", methods=["GET"])
+@login_required
 def logout():
     session.clear()
     return redirect(url_for("login"))

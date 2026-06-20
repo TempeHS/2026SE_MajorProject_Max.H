@@ -1,0 +1,98 @@
+{% extends 'base.html' %} {% block content %}
+<div class="container">
+    <div class="serveradd">
+      <h1>Add your server</h1>
+      {% if message %}
+      <p>{{ message }}</p>
+      {% endif %}
+    </div>
+
+    <form method="post" action="{{ url_for('serveradd') }}">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+    <div class="serveradd">
+
+        <div class="serveradd">
+        <label for="serverName" class="form-label">What should we call your server</label>
+        <div>
+        <input
+          name="serverName"
+          type="text"
+          class="form-control"
+          id="serverName"
+          required
+        />
+        </div>
+      </div>
+
+        <div class="serveradd">
+        <label for="serverHost" class="form-label">MC Server External IP</label>
+        <div>
+        <input
+          name="serverHost"
+          type="text"
+          class="form-control"
+          id="serverHost"
+          required
+        />
+    </div>
+      </div>
+
+      <div class="serveradd">
+        <label for="serverPort" class="form-label">MC rest api active port</label>
+        <div>
+        <input
+          name="serverPort"
+          type="text"
+          class="form-control"
+          id="serverPort"
+          required
+        /></div>
+      </div>
+
+      <div class="serveradd">
+        <label for="master key" class="form-label">Master Key</label>
+        <div>
+        <input
+          name="masterkey"
+          type="password"
+          class="form-control"
+          id="masterkey"
+          required
+        />
+    </div>
+      </div>
+      
+    <div class="serveradd">
+  <label class="form-label">Private or Public</label>
+
+  <div>
+    <input
+      type="radio"
+      id="privacyPrivate"
+      name="privacy"
+      value="private"
+      checked
+      required
+    />
+    <label for="privacyPrivate">Private</label>
+  </div>
+
+  <div>
+    <input
+      type="radio"
+      id="privacyPublic"
+      name="privacy"
+      value="public"
+      required
+    />
+    <label for="privacyPublic">Public</label>
+  </div>
+</div>
+<button type="submit">Add Server</button>
+</form>
+    </div>
+    </div>
+</div>
+
+{% endblock %}
