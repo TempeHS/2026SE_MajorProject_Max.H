@@ -1,7 +1,26 @@
-<nav class="navbar">
+<nav
+  class="navbar"
+  style="display: flex; flex-direction: row; align-items: center; gap: 1rem"
+>
   <a href="{{ url_for('search') }}">Search</a>
-  <ul class="navbar-nav ms-auto">
+  <ul
+    class="navbar-nav ms-auto"
+    style="
+      display: flex;
+      flex-direction: row;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      gap: 1rem;
+    "
+  >
     {% if session.get('email') %}
+    <li class="nav-item">
+      <a class="nav-link" href="{{ url_for('my_servers') }}">My Servers</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{{ url_for('serveradd') }}">Add Server</a>
+    </li>
     <li class="nav-item">
       <span class="nav-link">Signed in as {{ session.get('email') }}</span>
     </li>
@@ -14,5 +33,4 @@
     </li>
     {% endif %}
   </ul>
-  <a href="{{ url_for('serveradd') }}">serveradd</a>
 </nav>
