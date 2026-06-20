@@ -1,6 +1,8 @@
 import sqlite3
 import bcrypt
 import mcwebapi
+import os
+from cryptography.fernet import Fernet
 
 dbPath = "Flaskapp/databases/servers.db"
 
@@ -12,18 +14,50 @@ def dbConnect():
     return conn
 
 
+def _get_fernet():
+    key = os.environ.get("SERVER_DETAILS_FERNET_KEY", "").strip()
+    if not key:
+        raise RuntimeError("Missing SERVER_DETAILS_FERNET_KEY environment variable")
+    return Fernet(key.encode("utf-8"))
+
+
+def _encrypt_secret(serverKey: str) -> str:
+    f = _get_fernet()
+    return f.encrypt(serverKey.encode("utf-8")).decode("utf-8")
+
+
 def add_server(
     serverName: str,
     userID: int,
-    serverPort: int,
-    serverHost: str,
+    serverID: int,
     isPrivate: int = 1,
 ) -> bool:
     conn = dbConnect()
     try:
         conn.execute(
-            "INSERT INTO servers (serverHost, serverPort, userID, serverName, isPrivate) VALUES (?, ?, ?, ?, ?)",
-            (serverHost, serverPort, userID, serverName, isPrivate),
+            "INSERT INTO servers (serverID, userID, serverName, isPrivate) VALUES ( ?, ?, ?, ?)",
+            (serverID, userID, serverName, isPrivate),
+        )
+        conn.commit()
+        return True
+    except sqlite3.IntegrityError as e:
+        print(f"Integrity error: {e}")
+        return False
+    finally:
+        conn.close()
+
+
+def server_details(
+    serverPort: str,
+    serverHost: str,
+    serverKey: str,
+    serverID: int,
+):
+    conn = dbConnect()
+    try:
+        conn.execute(
+            "Insert Into serverDetails (serverID, serverPort, serverHost, secretKey) Values (?, ?, ?, ?)",
+            (serverID, serverPort, serverHost, serverKey),
         )
         conn.commit()
         return True
@@ -94,6 +128,15 @@ def login_user(Email: str, passingWord: str):
         return False
     finally:
         conn.close()
+
+
+def get_userID(email: str):
+    conn = dbConnect()
+    row = conn.execute(
+        "Select userID from Logins Where email = ?", (email.strip().lower(),)
+    ).fetchone()
+    conn.close()
+    return row["userID"] if row else None
 
 
 def check_User(Email: str) -> bool:

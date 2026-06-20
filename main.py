@@ -6,9 +6,11 @@ from flask import session
 from flask import redirect
 from flask import url_for
 import random
-import flask_wtf as csrfprot
+from flask_wtf.csrf import CSRFProtect
 from functools import wraps
 import mcwebapi
+import os
+from cryptography.fernet import Fernet, InvalidToken
 
 app = Flask(
     __name__,
@@ -23,7 +25,7 @@ app.config["PERMANENT_SESSION_LIFETIME"] = 10800
 app.config["SECRET_KEY"] = "your_temporary_local_dev_key_here"
 
 # add csrf protection
-csrf = csrfprot(app)
+csrf = CSRFProtect(app)
 
 
 @app.route("/")
@@ -84,6 +86,7 @@ def login():
         elif action == "login":
             if dbhandler.login_user(email, password):
                 session["email"] = email
+                session["userID"] = dbhandler.get_userID(email)
                 message = "Login Succesful"
                 redirect(url_for("search"))
             else:
@@ -92,9 +95,28 @@ def login():
     return render_template("login.html", message=message)
 
 
-@app.route("/serveradd.html", methods=["POST", "GET"])
+@app.route("/myservers.html", methods=["POST", "GET"])
+@login_required
+def my_servers(): ...
+
+
+@app.route("/serveradd.html", methods=["GET", "POST"])
 @login_required
 def serveradd():
+    if request.method == "POST":
+        serverName = request.form.get("servername", "")
+        serverHost = request.form.get("serverHost", "")
+        serverPort = request.form.get("serverPort", "")
+        serverKey = request.form.get("masterKey", "")
+        privacy = request.form.get("privacy", "private")
+        isPrivate = 1 if privacy == "private" else 0
+        userID = session["userID"]
+        serverID = int
+
+        for i in range(5):
+            serverID = random.randint(100000, 999999)
+
+        return redirect(url_for("my_servers"))
 
     return render_template("serveradd.html")
 

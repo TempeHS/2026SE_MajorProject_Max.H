@@ -1,4 +1,6 @@
+import os
+import json
 import requests
-from mcstatus import JavaServer
 
-def check_server_connection():
+
+def check_server_connection(): ...
