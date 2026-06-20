@@ -1,69 +1,111 @@
 import sqlite3
 import bcrypt
-import mcwebapi
 import os
-from cryptography.fernet import Fernet
+from cryptography.fernet import Fernet, InvalidToken
 
-dbPath = "Flaskapp/databases/servers.db"
+_BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+dbPath = os.path.join(_BASE_DIR, "Flaskapp", "databases", "servers.db")
 
 
 def dbConnect():
     conn = sqlite3.connect(dbPath)
-    conn.execute("Pragma foreign_keys = ON")
+    conn.execute("PRAGMA foreign_keys = ON")
     conn.row_factory = sqlite3.Row
     return conn
 
 
-def _get_fernet():
-    key = os.environ.get("SERVER_DETAILS_FERNET_KEY", "").strip()
+# Fernet functions for encryption and secret key
+def _get_fernet() -> Fernet:
+    key = os.environ.get("SERVER_FERNET_KEY", "").strip()
     if not key:
-        raise RuntimeError("Missing SERVER_DETAILS_FERNET_KEY environment variable")
+        raise RuntimeError("Missing SERVER_FERNET_KEY environment variable")
     return Fernet(key.encode("utf-8"))
 
 
-def _encrypt_secret(serverKey: str) -> str:
-    f = _get_fernet()
-    return f.encrypt(serverKey.encode("utf-8")).decode("utf-8")
+# encryption using fernet
+def _encrypt(plaintext: str) -> str:
+    return _get_fernet().encrypt(plaintext.encode("utf-8")).decode("utf-8")
 
 
-def add_server(
+# decrypt using secret key
+def _decrypt(token: str) -> str:
+    return _get_fernet().decrypt(token.encode("utf-8")).decode("utf-8")
+
+
+def add_server_details(
     serverName: str,
     userID: int,
     serverID: int,
+    serverPort: int,
+    serverHost: str,
+    serverKey: str,
     isPrivate: int = 1,
-) -> bool:
+) -> tuple[bool, str]:
+
     conn = dbConnect()
+
     try:
+        encrypted_key = _encrypt(serverKey)
+
         conn.execute(
-            "INSERT INTO servers (serverID, userID, serverName, isPrivate) VALUES ( ?, ?, ?, ?)",
+            "INSERT INTO servers (serverID, userID, serverName, isPrivate) VALUES (?, ?, ?, ?)",
             (serverID, userID, serverName, isPrivate),
         )
+        conn.execute(
+            "INSERT INTO serverDetails (serverID, serverPort, serverHost, secretKey) VALUES (?, ?, ?, ?)",
+            (serverID, serverPort, serverHost, encrypted_key),
+        )
         conn.commit()
-        return True
+        return True, "Server added successfully."
     except sqlite3.IntegrityError as e:
-        print(f"Integrity error: {e}")
-        return False
+        conn.rollback()
+        return False, f"Database error: {e}"
+    except RuntimeError as e:
+        conn.rollback()
+        return False, f"Config error: {e}"
+    except Exception as e:
+        conn.rollback()
+        return False, f"Unexpected error: {e}"
     finally:
         conn.close()
 
 
-def server_details(
-    serverPort: str,
-    serverHost: str,
-    serverKey: str,
-    serverID: int,
-):
+# returns server details only for api access to external servers
+def get_server_connection_details(
+    serverID: int, userID: int
+) -> tuple[bool, dict | None, str]:
+
     conn = dbConnect()
     try:
-        conn.execute(
-            "Insert Into serverDetails (serverID, serverPort, serverHost, secretKey) Values (?, ?, ?, ?)",
-            (serverID, serverPort, serverHost, serverKey),
+        row = conn.execute(
+            """
+            SELECT s.serverID, s.serverName, d.serverHost, d.serverPort, d.secretKey
+            FROM servers s
+            JOIN serverDetails d ON d.serverID = s.serverID
+            WHERE s.serverID = ? AND s.userID = ?
+            """,
+            (serverID, userID),
+        ).fetchone()
+
+        if not row:
+            return False, None, "Server not found or access denied."
+
+        return (
+            True,
+            {
+                "serverID": row["serverID"],
+                "serverName": row["serverName"],
+                "serverHost": row["serverHost"],
+                "serverPort": row["serverPort"],
+                "serverKey": _decrypt(row["secretKey"]),  # decrypted only in memory
+            },
+            "ok",
         )
-        conn.commit()
-        return True
-    except sqlite3.IntegrityError as e:
-        print(f"Integrity error: {e}")
-        return False
+
+    except InvalidToken:
+        return False, None, "Decryption failed: key mismatch."
+    except Exception as e:
+        return False, None, f"Unexpected error: {e}"
     finally:
         conn.close()
 

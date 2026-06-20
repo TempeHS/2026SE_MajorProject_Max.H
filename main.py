@@ -97,28 +97,55 @@ def login():
 
 @app.route("/myservers.html", methods=["POST", "GET"])
 @login_required
-def my_servers(): ...
+def my_servers():
+    return render_template("myservers.html")
 
 
 @app.route("/serveradd.html", methods=["GET", "POST"])
 @login_required
 def serveradd():
+    message = ""
+
     if request.method == "POST":
-        serverName = request.form.get("servername", "")
-        serverHost = request.form.get("serverHost", "")
-        serverPort = request.form.get("serverPort", "")
-        serverKey = request.form.get("masterKey", "")
+        serverName = request.form.get("serverName", "").strip()
+        serverHost = request.form.get("serverHost", "").strip()
+        serverPort_raw = request.form.get("serverPort", "").strip()
+        serverKey = request.form.get("masterkey", "").strip()
         privacy = request.form.get("privacy", "private")
         isPrivate = 1 if privacy == "private" else 0
         userID = session["userID"]
-        serverID = int
 
-        for i in range(5):
+        if not serverName or not serverHost or not serverPort_raw or not serverKey:
+            message = "All fields are required."
+            return render_template("serveradd.html", message=message)
+
+        try:
+            serverPort = int(serverPort_raw)
+            if serverPort < 1 or serverPort > 65535:
+                raise ValueError
+        except ValueError:
+            message = "Port must be a number between 1 and 65535."
+            return render_template("serveradd.html", message=message)
+
+        for _ in range(5):
             serverID = random.randint(100000, 999999)
+            ok, db_message = dbhandler.add_server_details(
+                serverName=serverName,
+                userID=userID,
+                serverID=serverID,
+                serverPort=serverPort,
+                serverHost=serverHost,
+                serverKey=serverKey,
+                isPrivate=isPrivate,
+            )
+            if ok:
+                return render_template("serveradd.html", message=db_message)
+            message = db_message
 
-        return redirect(url_for("my_servers"))
+        if not message:
+            message = "Could not add server. Try again."
 
-    return render_template("serveradd.html")
+    return render_template("serveradd.html", message=message)
 
 
 @app.route("/logout.html", methods=["GET"])
