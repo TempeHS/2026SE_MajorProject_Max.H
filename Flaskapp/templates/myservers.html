@@ -1,8 +1,115 @@
 {% extends 'base.html' %} {% block content %}
 <div class="container">
   <div class="serverlist">
-    <h1>your servers madam</h1>
+    <h1>Your Servers</h1>
+
+    {% if message %}
+    <p>{{ message }}</p>
+    {% endif %} {% if server_info %}
+    <div class="server-info">
+      <h3>Server Info</h3>
+      <pre>{{ server_info | tojson(indent=2) }}</pre>
+    </div>
+    {% endif %} {% if servers %}
+    <table class="server-table">
+      <thead>
+        <tr>
+          <th>Server Name</th>
+          <th>Server ID</th>
+          <th>Host</th>
+          <th>Port</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for server in servers %}
+        <tr>
+          <td>{{ server.serverName }}</td>
+          <td>{{ server.serverID }}</td>
+          <td>{{ server.serverHost }}</td>
+          <td>{{ server.serverPort }}</td>
+          <td>
+            <!-- Start Button -->
+            <form
+              method="POST"
+              action="{{ url_for('start_server', serverID=server.serverID) }}"
+              style="display: inline"
+            >
+              <input
+                type="hidden"
+                name="csrf_token"
+                value="{{ csrf_token() }}"
+              />
+              <button type="submit">Start</button>
+            </form>
+
+            <!-- End Button -->
+            <form
+              method="POST"
+              action="{{ url_for('end_server', serverID=server.serverID) }}"
+              style="display: inline"
+            >
+              <input
+                type="hidden"
+                name="csrf_token"
+                value="{{ csrf_token() }}"
+              />
+              <button type="submit">End</button>
+            </form>
+
+            <!-- Sync Players Button -->
+            <form
+              method="POST"
+              action="{{ url_for('sync_players', serverID=server.serverID) }}"
+              style="display: inline"
+            >
+              <input
+                type="hidden"
+                name="csrf_token"
+                value="{{ csrf_token() }}"
+              />
+              <button type="submit">Sync Players</button>
+            </form>
+
+            <!-- Edit Button -->
+            <a href="{{ url_for('edit_server', serverID=server.serverID) }}"
+              >Edit</a
+            >
+
+            <!-- Delete Button -->
+            <form
+              method="POST"
+              action="{{ url_for('my_servers') }}"
+              style="display: inline"
+            >
+              <input
+                type="hidden"
+                name="csrf_token"
+                value="{{ csrf_token() }}"
+              />
+              <input
+                type="hidden"
+                name="serverID"
+                value="{{ server.serverID }}"
+              />
+              <button
+                type="submit"
+                onclick="return confirm('Delete this server?');"
+              >
+                Delete
+              </button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p>
+      You have no servers yet.
+      <a href="{{ url_for('serveradd') }}">Add one!</a>
+    </p>
+    {% endif %}
   </div>
 </div>
-
-{% block content %}
+{% endblock %}

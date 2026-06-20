@@ -10,7 +10,6 @@ from flask_wtf.csrf import CSRFProtect
 from functools import wraps
 import mcwebapi
 import os
-from cryptography.fernet import Fernet, InvalidToken
 
 app = Flask(
     __name__,
@@ -28,6 +27,7 @@ app.config["SECRET_KEY"] = "your_temporary_local_dev_key_here"
 csrf = CSRFProtect(app)
 
 
+# base route
 @app.route("/")
 @app.route("/search", methods=["GET"])
 def search():
@@ -43,6 +43,7 @@ def search():
     )
 
 
+# login required decorator for secure functions
 def login_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
@@ -88,17 +89,33 @@ def login():
                 session["email"] = email
                 session["userID"] = dbhandler.get_userID(email)
                 message = "Login Succesful"
-                redirect(url_for("search"))
+                return redirect(url_for("search"))
             else:
                 message = "Invalid email or password"
 
     return render_template("login.html", message=message)
 
 
+# logout and end session
+@app.route("/logout.html", methods=["GET"])
+@login_required
+def logout():
+    session.clear()
+    return redirect(url_for("login"))
+
+
+# server related methods
 @app.route("/myservers.html", methods=["POST", "GET"])
 @login_required
 def my_servers():
-    return render_template("myservers.html")
+    message = ""
+    if request.method == "POST":
+        serverID = request.form.get("serverID")
+        if serverID:
+            success, message = dbhandler.delete_server(int(serverID), session["userID"])
+
+    servers = dbhandler.get_user_servers(session["userID"])
+    return render_template("myservers.html", servers=servers, message=message)
 
 
 @app.route("/serveradd.html", methods=["GET", "POST"])
@@ -148,11 +165,120 @@ def serveradd():
     return render_template("serveradd.html", message=message)
 
 
-@app.route("/logout.html", methods=["GET"])
+@app.route("/server/edit/<int:serverID>", methods=["GET", "POST"])
 @login_required
-def logout():
-    session.clear()
-    return redirect(url_for("login"))
+def edit_server(serverID):
+    ok, server, msg = dbhandler.get_server_for_edit(serverID, session["userID"])
+    if not ok:
+        servers = dbhandler.get_user_servers(session["userID"])
+        return render_template("myservers.html", servers=servers, message=msg)
+
+    message = ""
+    if request.method == "POST":
+        serverName = request.form.get("serverName", "").strip()
+        serverHost = request.form.get("serverHost", "").strip()
+        serverPort_raw = request.form.get("serverPort", "").strip()
+        serverKey = request.form.get("masterkey", "").strip()
+        privacy = request.form.get("privacy", "private")
+        isPrivate = 1 if privacy == "private" else 0
+
+        if not serverName or not serverHost or not serverPort_raw or not serverKey:
+            message = "All fields are required."
+            return render_template("edit_server.html", server=server, message=message)
+
+        try:
+            serverPort = int(serverPort_raw)
+            if serverPort < 1 or serverPort > 65535:
+                raise ValueError
+        except ValueError:
+            message = "Port must be a number between 1 and 65535."
+            return render_template("edit_server.html", server=server, message=message)
+
+        success, db_message = dbhandler.update_server_details(
+            serverID=serverID,
+            userID=session["userID"],
+            serverName=serverName,
+            serverHost=serverHost,
+            serverPort=serverPort,
+            serverKey=serverKey,
+            isPrivate=isPrivate,
+        )
+        if success:
+            return redirect(url_for("my_servers"))
+
+        message = db_message
+
+    return render_template("edit_server.html", server=server, message=message)
+
+
+@app.route("/server/start/<int:serverID>", methods=["POST"])
+@login_required
+def start_server(serverID):
+    success, details, msg = dbhandler.get_server_connection_details(
+        serverID, session["userID"]
+    )
+
+    if not success:
+        servers = dbhandler.get_user_servers(session["userID"])
+        return render_template("myservers.html", servers=servers, message=msg)
+
+    ok, result = mcwebapi.fetch_server_info(
+        host=details["serverHost"],
+        port=details["serverPort"],
+        masterkey=details["serverKey"],
+    )
+
+    servers = dbhandler.get_user_servers(session["userID"])
+    if not ok:
+        return render_template(
+            "myservers.html",
+            servers=servers,
+            message=f"Could not reach server: {result}",
+        )
+
+    # defined once, here only
+    listener_id = f"{session['userID']}:{serverID}"
+    log_dir = os.path.join(app.root_path, "Flaskapp", "logs")
+    os.makedirs(log_dir, exist_ok=True)
+    log_file = os.path.join(log_dir, f"events_{session['userID']}_{serverID}.txt")
+
+    started, listener_msg = mcwebapi.start_event_listener(
+        listener_id=listener_id,
+        host=details["serverHost"],
+        port=details["serverPort"],
+        masterkey=details["serverKey"],
+        output_file=log_file,
+    )
+
+    message = ("Server is online! " + listener_msg) if started else listener_msg
+    return render_template(
+        "myservers.html",
+        servers=servers,
+        message=message,
+        server_info=result,
+    )
+
+
+@app.route("/server/end/<int:serverID>", methods=["POST"])
+@login_required
+def end_server(serverID):
+    userID = session.get("userID")
+    if not userID:
+        return redirect(url_for("login"))
+
+    listener_id = f"{userID}:{serverID}"
+    ok, msg = mcwebapi.stop_event_listener(listener_id)
+
+    servers = dbhandler.get_user_servers(userID)
+    return render_template("myservers.html", servers=servers, message=msg)
+
+
+@app.route("/server/sync_players/<int:serverID>", methods=["POST"])
+@login_required
+def sync_players(serverID):
+    ok, msg = dbhandler.add_players_from_log(serverID, session["userID"])
+    servers = dbhandler.get_user_servers(session["userID"])
+    return render_template("myservers.html", servers=servers, message=msg)
 
 
 if __name__ == "__main__":

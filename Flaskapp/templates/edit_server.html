@@ -1,0 +1,60 @@
+{% extends 'base.html' %} {% block content %}
+<div class="container">
+  <h1>Edit Server</h1>
+
+  {% if message %}
+  <p>{{ message }}</p>
+  {% endif %}
+
+  <form method="POST">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+
+    <label>Server Name</label><br />
+    <input
+      type="text"
+      name="serverName"
+      value="{{ server.serverName }}"
+      required
+    /><br /><br />
+
+    <label>Server Host</label><br />
+    <input
+      type="text"
+      name="serverHost"
+      value="{{ server.serverHost }}"
+      required
+    /><br /><br />
+
+    <label>Server Port</label><br />
+    <input
+      type="number"
+      name="serverPort"
+      min="1"
+      max="65535"
+      value="{{ server.serverPort }}"
+      required
+    /><br /><br />
+
+    <label>Master Key</label><br />
+    <input
+      type="text"
+      name="masterkey"
+      value="{{ server.serverKey }}"
+      required
+    /><br /><br />
+
+    <label>Privacy</label><br />
+<select name="privacy">
+  <option value="private" {{ 'selected' if (server.isPrivate|int == 1) else '' }}>
+    Private
+  </option>
+  <option value="public" {{ 'selected' if (server.isPrivate|int == 0) else '' }}>
+    Public
+  </option>
+</select><br /><br />
+
+    <button type="submit">Save</button>
+    <a href="{{ url_for('my_servers') }}">Cancel</a>
+  </form>
+</div>
+{% endblock %}
