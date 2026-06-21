@@ -1,4 +1,0 @@
-
-
-Sprint goals: create ability to delete servers from database, create and get working event listener, must be able to get json, read json, and insert relevant key value pairs into the database.
-

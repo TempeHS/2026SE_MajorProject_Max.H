@@ -1,3 +1,0 @@
-Sprint-2-ui
-
-Sprint Goal: fill out basic html pages and create a visible page

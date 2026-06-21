@@ -1,4 +1,0 @@
-Sprint-3-connection
-
-Sprint Goal: connect the search page to the tables and fix database issues
-
