@@ -1,3 +1,4 @@
-Flask
+flask
+flask-wtf
 bcrypt
-flask_wtf
+cryptography
