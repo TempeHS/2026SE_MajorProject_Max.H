@@ -1,0 +1,85 @@
+21/06/2026 | Merge branch 'main' of https://github.com/TempeHS/2026SE_MajorProject_Max.H
+
+21/06/2026 | changed txt to md
+
+21/06/2026 | stuff
+
+21/06/2026 | added unit tests
+
+21/06/2026 | Merge branch 'main' of https://github.com/TempeHS/2026SE_MajorProject_Max.H
+
+21/06/2026 | removed redundancys
+
+21/06/2026 | uploaded sprint summaries
+documentation
+21/06/2026 | Create requirements.md
+
+21/06/2026 | Merge branch 'main' of https://github.com/TempeHS/2026SE_MajorProject_Max.H
+
+21/06/2026 | adding in required documentation STRUCTURE
+
+21/06/2026 | Update sprint-1-database.txt
+
+21/06/2026 | Merge pull request #2 from TempeHS/sprint--serverlisten
+Sprint  serverlisten
+21/06/2026 | completed major design, webapp seccuesfully accepts user ip, port, masterkey, can start event listner for specific server which will send a tcp request before either timing out and returning an error or start listening, webap succesfully takes in json files and adds it to a unique event log per server, then reads this file using a timestamp to make sure no old data is readded, leaderboard will only show public servers, while private can be made public at any time, leaderboard shows players statstics and server statstics
+
+20/06/2026 |  holy im tired, server can now correctly listen on ports, start an event listener and record new palyers to the database
+
+20/06/2026 | Merge pull request #1 from TempeHS/sprint--serveradd
+Sprint  serveradd
+20/06/2026 |  server adding works, worked on session moinitoring, ip wasnt working, wrong ip wasnt port forwarded, might work in next sprint
+
+20/06/2026 |  started working on curl requests, fernet is operational, adding servers works master key gets properly encrypted, please oh god save me
+
+20/06/2026 |  started adding proper server adding with crypthoraphy and setting up for curling
+
+19/06/2026 | add more functions to do later in dm manager
+
+19/06/2026 | started webapp -> mcserver connection
+
+19/06/2026 | added security fixes
+
+19/06/2026 | fixed most errors and bugs, serup database to correctly handle server ips and ports, added hashing for passwords
+
+18/06/2026 | fixed minor bugs
+
+18/06/2026 | filled out login and signup code so it now works, should add bcrypt to passwords, secret key is hardcoded, still need to make it look nice, next complete server searching and adding
+
+16/06/2026 | worked on login and signup routes and dbhandling, need to finish authhetication, login, signup, then move onto showing the leaderboards,
+
+11/06/2026 | filled stuff quickly from other repo
+
+11/06/2026 | Merge branch 'sprint--connection'
+
+11/06/2026 | push sprint
+
+11/06/2026 | fixed sql database issues, so that there can be multiple player with the same name, but different servers, changed reference order so now servers are dependant on logins, and serverkills and players are dependant on servers. added htmls corropsonding to new table structure.
+
+10/06/2026 | working on sql databases, fied errors fixing foreign key allignment
+
+10/06/2026 | working on sql databases, fixed errors fixing foreign key allignent
+
+08/06/2026 | Merge branch 'sprint--ui'
+
+08/06/2026 | Finished workable ui, changed approach to single page with partials, palceholder serverlist working, meaning updates from a database, will replace when adding connectivity between database and ui, started working on minecraft end pulgin, figuring out how it works, managed to get it to curl from its vm to the host machine
+
+08/06/2026 | added new base template and sorted out a few details, head hurts really bad
+
+03/06/2026 | started on main page ui
+
+03/06/2026 | Merge branch 'sprint--database'
+
+03/06/2026 | Created database framework for players and servers, were each server row can have multiple players assciated via a foreign key
+
+20/05/2026 | created: plans, relearnt flask
+
+20/05/2026 | Merge branch 'main' of https://github.com/TempeHS/2026SE_MajorProject_Max.H
+
+20/05/2026 | filled in missing folder structures
+
+18/05/2026 | initilised setup
+
+18/05/2026 | Update README.md
+
+18/05/2026 | Initial commit

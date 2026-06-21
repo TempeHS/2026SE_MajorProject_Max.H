@@ -67,3 +67,5 @@
 {"ts": "2026-06-21T06:37:22.374801Z", "event": "game", "data": {"type": "game", "content": "sphisi left the game", "timestamp": "2026-06-21T06:37:22.217550300Z"}}
 {"ts": "2026-06-21T06:37:24.703080Z", "event": "leave", "data": {"type": "leave", "player": "sphysi_lover", "content": "sphysi_lover left the game", "timestamp": "2026-06-21T06:37:24.584042700Z"}}
 {"ts": "2026-06-21T06:37:24.756787Z", "event": "game", "data": {"type": "game", "content": "sphysi_lover left the game", "timestamp": "2026-06-21T06:37:24.619421400Z"}}
+{"ts": "2026-06-21T19:44:04.504174Z", "event": "listener_started"}
+{"ts": "2026-06-21T19:44:13.055482Z", "event": "keepalive", "data": "ping"}
