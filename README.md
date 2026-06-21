@@ -56,6 +56,7 @@ Webapi dependncies can be found in requirements.txt
 7. setup the port forwarding for the MCRESTAPI port
 8. Login/Signup and press addserver
 9. put in the server details !ip is your external ip address, you can find this by using whatsmyipaddress.com
+> (docs/Screenshot 2026-06-22 065226.png)
 10. click create and go to the my servers page
 11. make sure the server is running then press start, this starts the event listener
 12. at any time press sync, to update the servers staistics
