@@ -18,9 +18,7 @@
 
 
 ## Unit Tests:
-| Test ID | Test Name |	What It Tests  |	Input	| Expected Output	| Actual Output |	Pass / Fail |
-| --- | --- | --- | --- | --- | --- | --- |
-|     |     |     |     |     |     |     |
+NA
 
 
 
@@ -74,9 +72,7 @@ ________________________________________________________________________________
 
 
 ## Unit Tests:
-| Test ID | Test Name |	What It Tests  |	Input	| Expected Output	| Actual Output |	Pass / Fail |
-| --- | --- | --- | --- | --- | --- | --- |
-|     |     |     |     |     |     |     |
+NA
 
 
 ## Client feedback summary
@@ -127,7 +123,8 @@ ________________________________________________________________________________
 ## Unit Tests:
 | Test ID | Test Name |	What It Tests  |	Input	| Expected Output	| Actual Output |	Pass / Fail |
 | --- | --- | --- | --- | --- | --- | --- |
-|     |     |     |     |     |     |     |
+| T3-01 | Valid User Signup | `check_User` / `add_User` — new account creation with unique email | New unique email + any password | Returns False from `check_User`; `add_User` inserts row and returns True | `check_User` returns False; `add_User` inserts hashed password and returns True | Pass |
+| T3-02 | Duplicate Email Rejection | `check_User` — duplicate email guard before signup | Email already present in Logins table | `check_User` returns True; signup branch shows "email already used" and makes no insert | `check_User` returns True; duplicate insert is blocked and message is displayed | Pass |
 
 
 ## Client feedback summary
@@ -182,7 +179,9 @@ ________________________________________________________________________________
 ## Unit Tests:
 | Test ID | Test Name |	What It Tests  |	Input	| Expected Output	| Actual Output |	Pass / Fail |
 | --- | --- | --- | --- | --- | --- | --- |
-|     |     |     |     |     |     |     |
+| T4-01 | Valid Login | `login_user` — bcrypt password verification on correct credentials | Registered email + correct plaintext password | `login_user` returns True; session stores email and userID | bcrypt.checkpw passes; session is populated and user is redirected to /search | Pass |
+| T4-02 | Invalid Password Rejected | `login_user` — bcrypt rejects wrong password for existing email | Registered email + incorrect password | `login_user` returns False; "Invalid email or password" message shown; no session set | bcrypt.checkpw fails; function returns False; no session created | Pass |
+| T4-03 | Unauthenticated Route Redirect | `login_required` decorator — blocks access to protected routes without a session | GET /myservers.html with no active session | Request is redirected to /login | Decorator detects missing 'email' key in session and redirects to login | Pass |
 
 
 ## Client feedback summary
@@ -241,7 +240,9 @@ ________________________________________________________________________________
 ## Unit Tests:
 | Test ID | Test Name |	What It Tests  |	Input	| Expected Output	| Actual Output |	Pass / Fail |
 | --- | --- | --- | --- | --- | --- | --- |
-|     |     |     |     |     |     |     |
+| T5-01 | Server Addition — Valid Input | `add_server_details` — inserts server and encrypts master key at rest | Valid serverName, host, port (25565), masterkey, userID; isPrivate = 1 | Returns (True, "Server added successfully."); serverDetails.secretKey stored as Fernet token, not plaintext | Row inserted in servers and serverDetails; secretKey is encrypted ciphertext | Pass |
+| T5-02 | Server Addition — Invalid Port | `main.py` serveradd route — port boundary validation before DB insert | serverPort = 0 (out of range) | "Port must be a number between 1 and 65535." displayed; no DB insert | ValueError raised by int conversion check; error message rendered; no insert attempted | Pass |
+| T5-03 | Master Key Decrypt Round-Trip | `_encrypt` / `_decrypt` — Fernet encrypt then decrypt returns original value | Plaintext string 'test-master-key-abc123' | `_decrypt(_encrypt(value))` == original value | Fernet token successfully decrypted back to original plaintext | Pass |
 
 
 ## Client feedback summary
@@ -305,7 +306,14 @@ ________________________________________________________________________________
 ## Unit Tests:
 | Test ID | Test Name |	What It Tests  |	Input	| Expected Output	| Actual Output |	Pass / Fail |
 | --- | --- | --- | --- | --- | --- | --- |
-|     |     |     |     |     |     |     |
+| T6-01 | Ownership Check on Delete | `delete_server` — prevents a user deleting another user's server | serverID belonging to userID 111111; delete attempted by userID 222222 | Returns (False, "Server not found or you do not own it."); row not deleted | Ownership SELECT returns no row; function returns failure tuple; DELETE not executed | Pass |
+| T6-02 | Player Sync from Join Events | `sync_all_log_events` — join events add new players; existing players not duplicated | Log with two join events for 'sphisi' and 'alex'; both absent from players table | Two rows inserted in players; players_msg reports "2 new player(s)" | Both players inserted; duplicate join for same player skipped on subsequent sync | Pass |
+| T6-03 | Death Counter Increment | `sync_all_log_events` — death events increment deathCount for existing player | Player 'sphisi' already in players table (deathCount = 0); log contains one death event for 'sphisi' | deathCount for 'sphisi' updated to 1 | UPDATE with COALESCE increments deathCount from 0 to 1 | Pass |
+| T6-04 | Kill–Death Pairing Within 2 s | `_parse_log` — game event + death event within 2 seconds are matched as a PvP kill | game event 'sphisi was slain by alex' at T+0.0 s; death event for 'sphisi' at T+1.5 s | kills list contains one entry: killerName='alex', killedName='sphisi' | `_ts_diff_seconds` within threshold; kill candidate paired with death confirmation | Pass |
+| T6-05 | Kill–Death Pairing Exceeds 2 s | `_parse_log` — game and death events more than 2 seconds apart are NOT matched | game event at T+0.0 s; death event for same player at T+3.0 s | kills list is empty; no spurious kill recorded | `_ts_diff_seconds` = 3.0 > threshold; candidate discarded | Pass |
+| T6-06 | Last-Sync Timestamp Filters Old Events | `sync_all_log_events` — events timestamped before lastSyncTs are ignored on re-sync | Log with one join event at T1; lastSyncTs set to T1; sync called again | No new players inserted; msg reports "No new join events." | `_parse_log` skips entries where ts <= last_sync_ts; no duplicate insert | Pass |
+| T6-07 | Malformed Log Lines Ignored | `_parse_log` — invalid JSON lines in event log do not raise exceptions | Log file containing `{not-json}` on one line alongside valid records | json.JSONDecodeError caught; malformed line skipped; valid records still processed | try/except around json.loads continues to next line without crash | Pass |
+| T6-08 | Leaderboard Shows Only Public Servers | `get_leaderboard_groups` — isPrivate = 1 servers excluded from public leaderboard | Two servers in DB: one public (isPrivate=0), one private (isPrivate=1); both have kill records | `get_leaderboard_groups` returns only the public server's kill data | SQL WHERE isPrivate = 0 filters out private server; only public kills returned | Pass |
 
 
 ## Client feedback summary
