@@ -1,4 +1,27 @@
-Sprint-1-connection
+# Sprint-1-connection
 
-Sprint Goal: to fill out the skeleton with necessary file names, such as templates or css, using the data dictionarys create the appropriate tables/databases
+## Sprint Goal:
+* Add basic files and files structure to add to later
 
+## Sprint plan: 
+* fill out suspected html skeleton
+* add log manager
+* add main.py
+* fill out initial documentation, gantt chart, product ideation
+
+## Unit Tests:
+| Test ID | Test Name |	What It Tests  |	Input	| Expected Output	| Actual Output |	Pass / Fail |
+| --- | --- | --- | --- | --- | --- | --- |
+|     |     |     |     |     |     |     |
+
+NOTE: unit tests were not applicable, as there was nothing to test
+
+## Client feedback summary
+* theres not much to comment on - still holding discussion about what the final product should look like
+
+## sprint summary
+* added outline for future development
+
+## future improvements
+* use time better
+* better planning weill ebale better workflow
