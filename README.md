@@ -12,11 +12,11 @@ Planned improvments: Finished
 ## functions and logs
 
 Sprint Documentation
-> documentation/SprintBacklog.md
+> [documentation/SprintBacklog.md](https://github.com/TempeHS/2026SE_MajorProject_Max.H/blob/main/documentation/SprintBacklog.md)
 
 Product Backlogs Documentation
->documentation/ProductBacklog.md
+>[documentation/ProductBacklog.md](https://github.com/TempeHS/2026SE_MajorProject_Max.H/blob/main/documentation/ProductBacklog.md)
 
 Functions Documentation
->documentation/functions.md
+>[documentation/functions.md](https://github.com/TempeHS/2026SE_MajorProject_Max.H/blob/main/documentation/functions.md)
 
