@@ -20,18 +20,26 @@ Product Backlogs Documentation
 Functions Documentation
 >[documentation/functions.md](https://github.com/TempeHS/2026SE_MajorProject_Max.H/blob/main/documentation/functions.md)
 
-##Dependencies
+## Dependencies
+MCRESTAPI
+FabricAPI
+Fabric server loader
 
-##Installtion and setup
+Webapi dependncies can be found in requirements.txt
 
-#Setting up the webapp
+## Installtion and setup
+
+# Setting up the webapp
 1. Clone repository
 2. remove hardcoded key (security risk)
 3. run
 4. > python3 -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
    > export SERVER_FERNET_KEY='PASTE_GENERATED_KEY_HERE'
+   > 
    > echo "export SERVER_FERNET_KEY='PASTE_GENERATED_KEY_HERE'" >> ~/.bashrc
+   > 
    > chmod 600 ~/.bashrc
+   > 
    > source ~/.bashrc
 5. run the application, ensuring that the port is correctly forwarded
 
@@ -52,5 +60,3 @@ Functions Documentation
 12. at any time press sync, to update the servers staistics
 13. once you have finished the session click end to stop the event listener
 14. now you can view the statistics of your server so long as the privacy is set to public, this can be changed in the my servers edit page
-
-
