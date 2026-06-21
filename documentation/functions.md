@@ -1,4 +1,4 @@
-## Database Functions (`database_manager.py`)
+## Database Functions (database_manager.py)
 
 These functions handle all direct interaction with the SQLite database and the event log files.
 
@@ -75,7 +75,7 @@ These functions handle all direct interaction with the SQLite database and the e
 
 ---
 
-## Rendering Functions (`main.py`)
+## Rendering Functions (main.py)
 
 These are Flask route functions. Each one handles an HTTP request and passes data to a Jinja2 template to render a response.
 
@@ -111,7 +111,7 @@ These are Flask route functions. Each one handles an HTTP request and passes dat
 
 ---
 
-## API / Listener Functions (`mcwebapi.py`)
+## API / Listener Functions (mcwebapi.py)
 
 These functions communicate with the external Minecraft REST API using curl subprocesses.
 
@@ -125,7 +125,7 @@ These functions communicate with the external Minecraft REST API using curl subp
 
 ---
 
-## Decorator (`main.py`)
+## Decorator (main.py)
 
 | Function | Summary |
 | --- | --- |
