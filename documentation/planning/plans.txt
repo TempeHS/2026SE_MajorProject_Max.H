@@ -22,6 +22,14 @@ Notes: 20/05/26
 	One-paragraph project description, Status (current sprint · last increment · next planned increment), how to run, links to the two backlog files. Update the Status section at the end of every sprint.
  
 
-flask config operations
- https://flask.palletsprojects.com/en/stable/config/
+Websites used
+https://flask.palletsprojects.com/en/stable/config/
+https://www.geeksforgeeks.org/python/os-path-module-python/
+https://www.w3schools.com/python/module_os.asp
+https://stackoverflow.com/questions/75535534/how-to-find-path-of-file-by-file-name-in-python
+https://github.com/Natxo09/mcrestapi/blob/main/README.md
+https://modrinth.com/mod/mcrestapi
+https://www.w3schools.com/html/html_form_input_types.asp
+https://www.w3schools.com/Tags/tag_label.asp
+https://www.w3schools.com/html/html_classes.asp
 
