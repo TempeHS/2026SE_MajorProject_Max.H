@@ -32,8 +32,9 @@ Webapi dependncies can be found in requirements.txt
 # Setting up the webapp
 1. Clone repository
 2. remove hardcoded key (security risk)
-3. run
-4. > python3 -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
+3. run the following
+   > python3 -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
+   > 
    > export SERVER_FERNET_KEY='PASTE_GENERATED_KEY_HERE'
    > 
    > echo "export SERVER_FERNET_KEY='PASTE_GENERATED_KEY_HERE'" >> ~/.bashrc
@@ -44,7 +45,7 @@ Webapi dependncies can be found in requirements.txt
 5. run the application, ensuring that the port is correctly forwarded
 
 
-#setting up a server in the webapp
+# setting up a server in the webapp
 1. setup a mc fabric server using the mod MCREST API by Natxo09
   > https://github.com/Natxo09/mcrestapi/tree/main
 2. start the server as you normally would and record the master key which is created on first startup in the terminal
