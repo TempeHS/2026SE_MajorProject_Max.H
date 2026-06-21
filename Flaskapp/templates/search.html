@@ -7,11 +7,12 @@
       type="text"
       name="search"
       value="{{ search or '' }}"
-      placeholder="Search by name, IP"
+      placeholder="Search by server name"
     />
     <button type="submit">Search</button>
   </form>
 
-  <section class="leaderboard">{% include "leaderboard.html" %}</section>
+  <h2>Public Server</h2>
+  {% include "players.html" %}
 </div>
 {% endblock %}

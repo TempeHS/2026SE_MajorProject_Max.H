@@ -1,0 +1,69 @@
+{"ts": "2026-06-21T01:38:06.278183Z", "event": "listener_started"}
+{"ts": "2026-06-21T01:38:16.224948Z", "event": "join", "data": {"type": "join", "player": "sphisi", "content": "sphisi joined the game", "timestamp": "2026-06-21T01:38:16.142607Z"}}
+{"ts": "2026-06-21T01:38:16.281473Z", "event": "game", "data": {"type": "game", "content": "sphisi joined the game", "timestamp": "2026-06-21T01:38:16.145607Z"}}
+{"ts": "2026-06-21T01:38:20.161124Z", "event": "keepalive", "data": "ping"}
+{"ts": "2026-06-21T01:38:50.157275Z", "event": "keepalive", "data": "ping"}
+{"ts": "2026-06-21T01:38:56.457197Z", "event": "game", "data": {"type": "game", "content": "sphisi fell from a high place", "timestamp": "2026-06-21T01:38:56.378790900Z"}}
+{"ts": "2026-06-21T01:38:56.512596Z", "event": "death", "data": {"type": "death", "player": "sphisi", "content": "sphisi died", "timestamp": "2026-06-21T01:38:56.379723Z"}}
+{"ts": "2026-06-21T01:38:59.283819Z", "event": "leave", "data": {"type": "leave", "player": "sphisi", "content": "sphisi left the game", "timestamp": "2026-06-21T01:38:59.205496100Z"}}
+{"ts": "2026-06-21T01:38:59.341339Z", "event": "game", "data": {"type": "game", "content": "sphisi left the game", "timestamp": "2026-06-21T01:38:59.233632300Z"}}
+{"ts": "2026-06-21T01:40:05.776456Z", "event": "listener_started"}
+{"ts": "2026-06-21T01:40:16.719686Z", "event": "join", "data": {"type": "join", "player": "sphisi", "content": "sphisi joined the game", "timestamp": "2026-06-21T01:40:16.647024500Z"}}
+{"ts": "2026-06-21T01:40:16.774681Z", "event": "game", "data": {"type": "game", "content": "sphisi joined the game", "timestamp": "2026-06-21T01:40:16.650024300Z"}}
+{"ts": "2026-06-21T01:40:20.360635Z", "event": "keepalive", "data": "ping"}
+{"ts": "2026-06-21T01:40:24.655046Z", "event": "game", "data": {"type": "game", "content": "sphisi was impaled on a stalagmite", "timestamp": "2026-06-21T01:40:24.581318700Z"}}
+{"ts": "2026-06-21T01:40:24.711334Z", "event": "death", "data": {"type": "death", "player": "sphisi", "content": "sphisi died", "timestamp": "2026-06-21T01:40:24.582315100Z"}}
+{"ts": "2026-06-21T01:40:27.932406Z", "event": "leave", "data": {"type": "leave", "player": "sphisi", "content": "sphisi left the game", "timestamp": "2026-06-21T01:40:27.859435300Z"}}
+{"ts": "2026-06-21T01:40:27.986644Z", "event": "game", "data": {"type": "game", "content": "sphisi left the game", "timestamp": "2026-06-21T01:40:27.886436400Z"}}
+{"ts": "2026-06-21T02:55:52.789400Z", "event": "listener_started"}
+{"ts": "2026-06-21T02:55:55.870206Z", "event": "keepalive", "data": "ping"}
+{"ts": "2026-06-21T02:55:56.131677Z", "event": "join", "data": {"type": "join", "player": "sphisi", "content": "sphisi joined the game", "timestamp": "2026-06-21T02:55:56.112523800Z"}}
+{"ts": "2026-06-21T02:55:56.187377Z", "event": "game", "data": {"type": "game", "content": "sphisi joined the game", "timestamp": "2026-06-21T02:55:56.115523700Z"}}
+{"ts": "2026-06-21T02:56:13.023265Z", "event": "game", "data": {"type": "game", "content": "sphisi was slain by Zombie", "timestamp": "2026-06-21T02:56:13.005795500Z"}}
+{"ts": "2026-06-21T02:56:13.079645Z", "event": "death", "data": {"type": "death", "player": "sphisi", "content": "sphisi died", "timestamp": "2026-06-21T02:56:13.007790Z"}}
+{"ts": "2026-06-21T02:56:15.159819Z", "event": "leave", "data": {"type": "leave", "player": "sphisi", "content": "sphisi left the game", "timestamp": "2026-06-21T02:56:15.141583700Z"}}
+{"ts": "2026-06-21T02:56:15.216185Z", "event": "game", "data": {"type": "game", "content": "sphisi left the game", "timestamp": "2026-06-21T02:56:15.157694900Z"}}
+{"ts": "2026-06-21T03:02:26.951482Z", "event": "listener_started"}
+{"ts": "2026-06-21T03:02:32.158477Z", "event": "join", "data": {"type": "join", "player": "sphysi_lover", "content": "sphysi_lover joined the game", "timestamp": "2026-06-21T03:02:32.141960700Z"}}
+{"ts": "2026-06-21T03:02:32.215414Z", "event": "game", "data": {"type": "game", "content": "sphysi_lover joined the game", "timestamp": "2026-06-21T03:02:32.145956Z"}}
+{"ts": "2026-06-21T03:02:33.787893Z", "event": "join", "data": {"type": "join", "player": "sphisi", "content": "sphisi joined the game", "timestamp": "2026-06-21T03:02:33.768605100Z"}}
+{"ts": "2026-06-21T03:02:33.842071Z", "event": "game", "data": {"type": "game", "content": "sphisi joined the game", "timestamp": "2026-06-21T03:02:33.768605100Z"}}
+{"ts": "2026-06-21T03:02:42.840176Z", "event": "keepalive", "data": "ping"}
+{"ts": "2026-06-21T03:02:48.631833Z", "event": "game", "data": {"type": "game", "content": "sphysi_lover was slain by sphisi", "timestamp": "2026-06-21T03:02:48.610916900Z"}}
+{"ts": "2026-06-21T03:02:48.692659Z", "event": "death", "data": {"type": "death", "player": "sphysi_lover", "content": "sphysi_lover died", "timestamp": "2026-06-21T03:02:48.612853400Z"}}
+{"ts": "2026-06-21T03:02:51.138373Z", "event": "leave", "data": {"type": "leave", "player": "sphisi", "content": "sphisi left the game", "timestamp": "2026-06-21T03:02:51.121228500Z"}}
+{"ts": "2026-06-21T03:02:51.195781Z", "event": "game", "data": {"type": "game", "content": "sphisi left the game", "timestamp": "2026-06-21T03:02:51.168096900Z"}}
+{"ts": "2026-06-21T03:02:53.574340Z", "event": "leave", "data": {"type": "leave", "player": "sphysi_lover", "content": "sphysi_lover left the game", "timestamp": "2026-06-21T03:02:53.554264500Z"}}
+{"ts": "2026-06-21T03:02:53.629895Z", "event": "game", "data": {"type": "game", "content": "sphysi_lover left the game", "timestamp": "2026-06-21T03:02:53.569459300Z"}}
+{"ts": "2026-06-21T03:06:43.010963Z", "event": "listener_started"}
+{"ts": "2026-06-21T03:06:46.494929Z", "event": "join", "data": {"type": "join", "player": "sphysi_lover", "content": "sphysi_lover joined the game", "timestamp": "2026-06-21T03:06:46.475942600Z"}}
+{"ts": "2026-06-21T03:06:46.551339Z", "event": "game", "data": {"type": "game", "content": "sphysi_lover joined the game", "timestamp": "2026-06-21T03:06:46.476937700Z"}}
+{"ts": "2026-06-21T03:06:50.591623Z", "event": "join", "data": {"type": "join", "player": "sphisi", "content": "sphisi joined the game", "timestamp": "2026-06-21T03:06:50.577526700Z"}}
+{"ts": "2026-06-21T03:06:50.649305Z", "event": "game", "data": {"type": "game", "content": "sphisi joined the game", "timestamp": "2026-06-21T03:06:50.578527100Z"}}
+{"ts": "2026-06-21T03:07:05.737135Z", "event": "keepalive", "data": "ping"}
+{"ts": "2026-06-21T03:07:35.738983Z", "event": "keepalive", "data": "ping"}
+{"ts": "2026-06-21T03:07:51.782982Z", "event": "game", "data": {"type": "game", "content": "sphysi_lover was slain by sphisi", "timestamp": "2026-06-21T03:07:51.767065100Z"}}
+{"ts": "2026-06-21T03:07:51.839585Z", "event": "death", "data": {"type": "death", "player": "sphysi_lover", "content": "sphysi_lover died", "timestamp": "2026-06-21T03:07:51.768972500Z"}}
+{"ts": "2026-06-21T03:07:58.814990Z", "event": "leave", "data": {"type": "leave", "player": "sphisi", "content": "sphisi left the game", "timestamp": "2026-06-21T03:07:58.798063200Z"}}
+{"ts": "2026-06-21T03:07:58.877689Z", "event": "game", "data": {"type": "game", "content": "sphisi left the game", "timestamp": "2026-06-21T03:07:58.821744100Z"}}
+{"ts": "2026-06-21T03:08:00.552549Z", "event": "leave", "data": {"type": "leave", "player": "sphysi_lover", "content": "sphysi_lover left the game", "timestamp": "2026-06-21T03:08:00.535903200Z"}}
+{"ts": "2026-06-21T03:08:00.611713Z", "event": "game", "data": {"type": "game", "content": "sphysi_lover left the game", "timestamp": "2026-06-21T03:08:00.573904300Z"}}
+{"ts": "2026-06-21T03:34:31.207177Z", "event": "listener_started"}
+{"ts": "2026-06-21T03:34:35.360488Z", "event": "join", "data": {"type": "join", "player": "sphysi_lover", "content": "sphysi_lover joined the game", "timestamp": "2026-06-21T03:34:35.352876400Z"}}
+{"ts": "2026-06-21T03:34:35.420346Z", "event": "game", "data": {"type": "game", "content": "sphysi_lover joined the game", "timestamp": "2026-06-21T03:34:35.353877900Z"}}
+{"ts": "2026-06-21T03:34:37.116170Z", "event": "join", "data": {"type": "join", "player": "sphisi", "content": "sphisi joined the game", "timestamp": "2026-06-21T03:34:37.106214200Z"}}
+{"ts": "2026-06-21T03:34:37.174503Z", "event": "game", "data": {"type": "game", "content": "sphisi joined the game", "timestamp": "2026-06-21T03:34:37.107226800Z"}}
+{"ts": "2026-06-21T03:34:45.561607Z", "event": "game", "data": {"type": "game", "content": "sphysi_lover was slain by sphisi", "timestamp": "2026-06-21T03:34:45.548044400Z"}}
+{"ts": "2026-06-21T03:34:45.619285Z", "event": "death", "data": {"type": "death", "player": "sphysi_lover", "content": "sphysi_lover died", "timestamp": "2026-06-21T03:34:45.549046700Z"}}
+{"ts": "2026-06-21T03:34:47.800264Z", "event": "leave", "data": {"type": "leave", "player": "sphisi", "content": "sphisi left the game", "timestamp": "2026-06-21T03:34:47.789870200Z"}}
+{"ts": "2026-06-21T03:34:47.856737Z", "event": "game", "data": {"type": "game", "content": "sphisi left the game", "timestamp": "2026-06-21T03:34:47.791871100Z"}}
+{"ts": "2026-06-21T03:34:49.429462Z", "event": "leave", "data": {"type": "leave", "player": "sphysi_lover", "content": "sphysi_lover left the game", "timestamp": "2026-06-21T03:34:49.419105200Z"}}
+{"ts": "2026-06-21T03:34:49.483716Z", "event": "game", "data": {"type": "game", "content": "sphysi_lover left the game", "timestamp": "2026-06-21T03:34:49.453012700Z"}}
+{"ts": "2026-06-21T06:37:12.050393Z", "event": "listener_started"}
+{"ts": "2026-06-21T06:37:13.835931Z", "event": "keepalive", "data": "ping"}
+{"ts": "2026-06-21T06:37:20.786107Z", "event": "game", "data": {"type": "game", "content": "sphysi_lover was slain by sphisi", "timestamp": "2026-06-21T06:37:20.663830300Z"}}
+{"ts": "2026-06-21T06:37:20.839553Z", "event": "death", "data": {"type": "death", "player": "sphysi_lover", "content": "sphysi_lover died", "timestamp": "2026-06-21T06:37:20.664902500Z"}}
+{"ts": "2026-06-21T06:37:22.315940Z", "event": "leave", "data": {"type": "leave", "player": "sphisi", "content": "sphisi left the game", "timestamp": "2026-06-21T06:37:22.196656200Z"}}
+{"ts": "2026-06-21T06:37:22.374801Z", "event": "game", "data": {"type": "game", "content": "sphisi left the game", "timestamp": "2026-06-21T06:37:22.217550300Z"}}
+{"ts": "2026-06-21T06:37:24.703080Z", "event": "leave", "data": {"type": "leave", "player": "sphysi_lover", "content": "sphysi_lover left the game", "timestamp": "2026-06-21T06:37:24.584042700Z"}}
+{"ts": "2026-06-21T06:37:24.756787Z", "event": "game", "data": {"type": "game", "content": "sphysi_lover left the game", "timestamp": "2026-06-21T06:37:24.619421400Z"}}

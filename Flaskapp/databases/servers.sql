@@ -12,6 +12,7 @@ Create Table If not Exists servers(
     serverName text not null,
     sessionsActive integer not null DEFAULT 0 CHECK (sessionsActive >= 0),
     isPrivate INTEGER NOT NULL DEFAULT 1 CHECK (isPrivate IN (0, 1)),
+    lastSyncTs TEXT, 
 
     foreign key (userID) references Logins(userID) on delete cascade
 );

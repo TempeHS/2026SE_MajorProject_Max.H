@@ -1,5 +1,15 @@
+@import url("https://fonts.googleapis.com/css2?family=Exo:wght@400;600;700&display=swap");
+
+* {
+  box-sizing: border-box;
+}
+
 body {
-  background-color: rgb(255, 255, 255);
+  margin: 0;
+  background-color: #ffffff;
+  color: #1f2937;
+  font-family: "Exo", sans-serif;
+  line-height: 1.5;
 }
 
 .navbar {
@@ -13,10 +23,11 @@ body {
   gap: 1rem;
   padding: 0 1rem;
   background-color: #424040;
+  z-index: 1000;
 }
 
 .navbar a {
-  color: rgb(255, 255, 255);
+  color: #ffffff;
   text-decoration: none;
   font-weight: 600;
 }
@@ -26,23 +37,17 @@ body {
 }
 
 main {
-  padding-top: 80px;
+  padding-top: 88px;
+  width: min(1100px, 94vw);
+  margin: 0 auto;
 }
 
-.search {
-  flex-direction: column;
+.search,
+.leaderboard,
+.serveradd {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-}
-
-.search button {
-  padding: 0.7rem 1.1rem;
-  border: none;
-  border-radius: 9999px;
-  background: rgb(219, 9, 9);
-  color: #fff;
-  cursor: pointer;
 }
 
 .search input[type="text"] {
@@ -52,38 +57,88 @@ main {
   border-radius: 9999px;
   outline: none;
   font-size: 1rem;
-  box-sizing: border-box;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
-.leaderboard {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.serveradd {
-  flex-direction: column;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.serveradd input[type="text"] {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.serveradd button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.search button {
+  margin-top: 0.75rem;
+  padding: 0.7rem 1.1rem;
+  border: none;
+  border-radius: 9999px;
+  background: #db0909;
+  color: #fff;
+  cursor: pointer;
 }
 
 .serverlist {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: block;
+  width: 100%;
+}
+
+.server-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.server-table th,
+.server-table td {
+  padding: 0.7rem 0.85rem;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: left;
+}
+
+.server-table thead {
+  background: #f3f4f6;
+}
+
+.server-table tr:last-child td {
+  border-bottom: none;
+}
+
+.server-table td form,
+.server-table td a {
+  margin-right: 0.4rem;
+}
+
+.server-table button,
+.server-table a {
+  font-family: "Exo", sans-serif;
+}
+
+.server-table button {
+  padding: 0.35rem 0.65rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background: #f9fafb;
+  cursor: pointer;
+}
+
+.server-table button:hover {
+  background: #f3f4f6;
+}
+
+.server-box {
+  margin-top: 1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 0.8rem;
+  background: #fff;
+}
+
+.server-box-title {
+  margin-top: 0;
+}
+
+.players-table {
+  margin: 0.5rem 0 1rem 0;
+}
+
+.players-table > summary {
+  cursor: pointer;
+  font-weight: 600;
 }
