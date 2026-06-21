@@ -1,0 +1,55 @@
+{% if leaderboard_groups %} {% for group in leaderboard_groups %}
+<section class="server-box">
+  <h3 class="server-box-title">{{ group.serverName }}</h3>
+
+  <h4>Players</h4>
+  {% if group.players %}
+  <table class="server-table players-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Kills</th>
+        <th>Deaths</th>
+        <th>Current Life</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for p in group.players %}
+      <tr>
+        <td>{{ p.playerName }}</td>
+        <td>{{ p.killCount }}</td>
+        <td>{{ p.deathCount }}</td>
+        <td>{{ p.currentLife }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p>No player stats yet.</p>
+  {% endif %}
+
+  <h4>Server Kills</h4>
+  <table class="server-table">
+    <thead>
+      <tr>
+        <th>Killer</th>
+        <th>Killed</th>
+        <th>Weapon</th>
+        <th>Time</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in group.kills %}
+      <tr>
+        <td>{{ row.playerKillerName }}</td>
+        <td>{{ row.playerKilledName }}</td>
+        <td>{{ row.weaponUsed }}</td>
+        <td>{{ row.timeOfDeath }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endfor %} {% else %}
+<p>No public kill events yet.</p>
+{% endif %}

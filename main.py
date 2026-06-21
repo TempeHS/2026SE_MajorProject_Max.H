@@ -10,6 +10,7 @@ from flask_wtf.csrf import CSRFProtect
 from functools import wraps
 import mcwebapi
 import os
+from collections import OrderedDict
 
 app = Flask(
     __name__,
@@ -25,22 +26,6 @@ app.config["SECRET_KEY"] = "your_temporary_local_dev_key_here"
 
 # add csrf protection
 csrf = CSRFProtect(app)
-
-
-# base route
-@app.route("/")
-@app.route("/search", methods=["GET"])
-def search():
-    search = request.args.get("search", "").strip()
-    results = []
-    leaderboards = dbhandler.get_leaderboards(search)
-
-    if search:
-        results = dbhandler.search_servers(search)
-
-    return render_template(
-        "search.html", search=search, results=results, leaderboards=leaderboards
-    )
 
 
 # login required decorator for secure functions
@@ -102,6 +87,32 @@ def login():
 def logout():
     session.clear()
     return redirect(url_for("login"))
+
+
+@app.route("/")
+@app.route("/search", methods=["GET"])
+def search():
+    search = request.args.get("search", "").strip()
+    results = []
+    if search:
+        results = dbhandler.search_servers(search)
+
+    leaderboard_groups = dbhandler.get_leaderboard_groups(search)
+    return render_template(
+        "search.html",
+        search=search,
+        results=results,
+        leaderboard_groups=leaderboard_groups,
+    )
+
+
+@app.route("/leaderboard", methods=["GET"])
+def leaderboard():
+    search = request.args.get("search", "").strip()
+    leaderboard_groups = dbhandler.get_leaderboard_groups(search)
+    return render_template(
+        "leaderboard.html", search=search, leaderboard_groups=leaderboard_groups
+    )
 
 
 # server related methods
@@ -222,6 +233,12 @@ def start_server(serverID):
         servers = dbhandler.get_user_servers(session["userID"])
         return render_template("myservers.html", servers=servers, message=msg)
 
+    # ensure event log exists before listener starts writing
+    log_ok, log_msg = dbhandler.create_event_log(serverID, session["userID"])
+    if not log_ok:
+        servers = dbhandler.get_user_servers(session["userID"])
+        return render_template("myservers.html", servers=servers, message=log_msg)
+
     ok, result = mcwebapi.fetch_server_info(
         host=details["serverHost"],
         port=details["serverPort"],
@@ -236,11 +253,10 @@ def start_server(serverID):
             message=f"Could not reach server: {result}",
         )
 
-    # defined once, here only
     listener_id = f"{session['userID']}:{serverID}"
-    log_dir = os.path.join(app.root_path, "Flaskapp", "logs")
-    os.makedirs(log_dir, exist_ok=True)
-    log_file = os.path.join(log_dir, f"events_{session['userID']}_{serverID}.txt")
+    log_file = os.path.join(
+        app.root_path, "Flaskapp", "logs", f"events_{session['userID']}_{serverID}.txt"
+    )
 
     started, listener_msg = mcwebapi.start_event_listener(
         listener_id=listener_id,
@@ -276,9 +292,25 @@ def end_server(serverID):
 @app.route("/server/sync_players/<int:serverID>", methods=["POST"])
 @login_required
 def sync_players(serverID):
-    ok, msg = dbhandler.add_players_from_log(serverID, session["userID"])
-    servers = dbhandler.get_user_servers(session["userID"])
-    return render_template("myservers.html", servers=servers, message=msg)
+    userID = session["userID"]
+
+    ok_last, last_sync_ts, msg_last = dbhandler.get_server_last_sync(serverID, userID)
+    if not ok_last:
+        servers = dbhandler.get_user_servers(userID)
+        return render_template("myservers.html", servers=servers, message=msg_last)
+
+    # single call replaces three separate sync calls
+    msg_players, msg_deaths, msg_kills = dbhandler.sync_all_log_events(
+        serverID, userID, last_sync_ts
+    )
+
+    latest_ts = dbhandler.get_latest_log_ts(serverID, userID)
+    if latest_ts and ((not last_sync_ts) or (latest_ts > last_sync_ts)):
+        dbhandler.set_server_last_sync(serverID, userID, latest_ts)
+
+    message = f"Players: {msg_players} | Deaths: {msg_deaths} | Kills: {msg_kills}"
+    servers = dbhandler.get_user_servers(userID)
+    return render_template("myservers.html", servers=servers, message=message)
 
 
 if __name__ == "__main__":

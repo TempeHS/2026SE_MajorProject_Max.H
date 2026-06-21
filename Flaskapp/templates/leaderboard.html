@@ -1,11 +1,15 @@
-<h2>Server List</h2>
+{% extends "base.html" %} {% block title %}Leaderboard{% endblock %} {% block
+content %}
+<h2>Public Servers</h2>
 
-{% if leaderboards %}
-<ul>
-  {% for lb in leaderboards %}
-  <li>{{ lb.name }} — {{ lb.score }} active sessions</li>
-  {% endfor %}
-</ul>
-{% else %}
-<p>No servers yet.</p>
-{% endif %}
+<form class="search" method="get" action="{{ url_for('leaderboard') }}">
+  <input
+    type="text"
+    name="search"
+    value="{{ search or '' }}"
+    placeholder="Search server/player/weapon"
+  />
+  <button type="submit">Filter</button>
+</form>
+
+{% include "players.html" %} {% endblock %}
